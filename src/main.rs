@@ -1,6 +1,7 @@
 use bevy::prelude::*;
 use bevy_inspector_egui::WorldInspectorPlugin;
 
+mod game_assets;
 mod lifetime;
 mod tower;
 use tower::Tower;
@@ -18,6 +19,7 @@ fn main() {
             resizable: false,
             ..Default::default()
         })
+        .add_startup_system(game_assets::load)
         .add_startup_system(spawn_basic_scene)
         .add_startup_system(spawn_camera)
         .add_system(tower::shooting)

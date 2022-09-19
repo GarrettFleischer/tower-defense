@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use std::f32::consts::PI;
 
-use crate::lifetime::{self, Lifetime};
+use crate::{game_assets::GameAssets, lifetime::Lifetime};
 
 #[derive(Reflect, Component, Default)]
 #[reflect(Component)]
@@ -11,8 +11,7 @@ pub struct Tower {
 
 pub fn shooting(
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
+    bullet_assets: Res<GameAssets>,
     time: Res<Time>,
     mut towers: Query<&mut Tower>,
 ) {
@@ -24,9 +23,8 @@ pub fn shooting(
                 Transform::from_xyz(0.0, 0.7, 0.6).with_rotation(Quat::from_rotation_y(-PI / 2.0));
 
             commands
-                .spawn_bundle(PbrBundle {
-                    mesh: meshes.add(Mesh::from(shape::Cube { size: 0.1 })),
-                    material: materials.add(Color::rgb(0.87, 0.44, 0.42).into()),
+                .spawn_bundle(SceneBundle {
+                    scene: bullet_assets.bullet_scene.clone(),
                     transform: spawn_transform,
                     ..default()
                 })
